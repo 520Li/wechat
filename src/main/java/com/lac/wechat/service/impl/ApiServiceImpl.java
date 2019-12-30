@@ -15,6 +15,7 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ApiServiceImpl implements ApiService {
@@ -23,6 +24,8 @@ public class ApiServiceImpl implements ApiService {
     private String accessTokenUrl;
     @Value("${jsapi_ticket_url}")
     private String jsapiTicketUrl;
+    @Value("${url}")
+    private String url;
 
     /**
      * 获取access_token
@@ -140,6 +143,7 @@ public class ApiServiceImpl implements ApiService {
         return jsapiTicket;
     }
 
+
     /**
      * 获取jsapi_ticket
      *
@@ -201,7 +205,14 @@ public class ApiServiceImpl implements ApiService {
         return System.currentTimeMillis() > ticket.getExpires_in();
     }
 
-    private String getJssdk() {
+
+    /**
+     * 获取JS-SDK认证
+     *
+     * @return
+     */
+    @Override
+    public Map fetchJsSdk() {
         /*
         noncestr=Wm3WZYTPz0wzccnW
         jsapi_ticket=sM4AOVdWfPE4DxkXGEs8VMCPGGVi4C3VM0P37wVUCFvkVAy_90u5h9nbSlYy3-Sl-HhTdfl2fzFy1AOcHKP7qg
@@ -209,21 +220,22 @@ public class ApiServiceImpl implements ApiService {
         url=http://mp.weixin.qq.com?params=value
          */
         String noncestr = UUID.randomUUID().toString();
-        JsapiTicket jsapiTicket = getJsapiTicket();
+        JsapiTicket jsapiTicket = fetchJsapiTicket();
         String jsapi_ticket = jsapiTicket.getTicket();
         String timestamp = System.currentTimeMillis() + "";
-        String url = "http://b63dee3d.ngrok.io/index.html";
-        /*Map<String, String> map = new LinkedHashMap<>();
-        map.put("noncestr", noncestr);
-        map.put("jsapi_ticket", jsapi_ticket);
-        map.put("timestamp", timestamp);
-        map.put("url", url);*/
-        String key = "jsapi_ticket=" + jsapi_ticket +
-                "&noncestr=" + noncestr +
-                "&timestamp=" + timestamp +
-                "&url=" + url;
 
-        return EncryptUtil.getSha1(key);
+        List<String> list = Arrays.asList("jsapi_ticket=" + jsapi_ticket,
+                "noncestr=" + noncestr,
+                "timestamp=" + timestamp,
+                "url=" + url);
+        list.sort(String::compareTo);
+        String key = list.stream().collect(Collectors.joining("&"));
+        key = EncryptUtil.getSha1(key);
+        Map map = new HashMap();
+        map.put("signature", key);
+        map.put("noncestr", noncestr);
+        map.put("timestamp", timestamp);
+        return map;
     }
 
 

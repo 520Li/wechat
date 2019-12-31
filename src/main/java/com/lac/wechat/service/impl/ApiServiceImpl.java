@@ -24,8 +24,8 @@ public class ApiServiceImpl implements ApiService {
     private String accessTokenUrl;
     @Value("${jsapi_ticket_url}")
     private String jsapiTicketUrl;
-    @Value("${url}")
-    private String url;
+    /*@Value("${url}")
+    private String url;*/
 
     /**
      * 获取access_token
@@ -52,6 +52,7 @@ public class ApiServiceImpl implements ApiService {
                 e1.printStackTrace();
             }
         }
+        /*System.setProperty("access_token", accessToken.getAccess_token());*/
         return accessToken;
     }
 
@@ -151,7 +152,7 @@ public class ApiServiceImpl implements ApiService {
      */
     private JsapiTicket getJsapiTicket() {
         AccessToken accessToken = fetchAccessToken();
-        jsapiTicketUrl = jsapiTicketUrl.replace("ACCESS_TOKEN", accessToken.getAccess_token());
+        jsapiTicketUrl = String.format(jsapiTicketUrl, accessToken.getAccess_token());
         String data = HttpClientUtil.doGet(jsapiTicketUrl, null);
         JsapiTicket result = FastJsonUtil.toBean(data, JsapiTicket.class);
         //设置过期时间
@@ -212,7 +213,7 @@ public class ApiServiceImpl implements ApiService {
      * @return
      */
     @Override
-    public Map fetchJsSdk() {
+    public Map fetchJsSdk(String url) {
         /*
         noncestr=Wm3WZYTPz0wzccnW
         jsapi_ticket=sM4AOVdWfPE4DxkXGEs8VMCPGGVi4C3VM0P37wVUCFvkVAy_90u5h9nbSlYy3-Sl-HhTdfl2fzFy1AOcHKP7qg
@@ -230,6 +231,7 @@ public class ApiServiceImpl implements ApiService {
                 "url=" + url);
         list.sort(String::compareTo);
         String key = list.stream().collect(Collectors.joining("&"));
+        //System.out.println(key);
         key = EncryptUtil.getSha1(key);
         Map map = new HashMap();
         map.put("signature", key);

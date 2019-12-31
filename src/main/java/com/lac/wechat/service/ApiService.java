@@ -27,7 +27,7 @@ public interface ApiService {
      *
      * @return
      */
-    public Map fetchJsSdk();
+    public Map fetchJsSdk(String url);
 
 
 }

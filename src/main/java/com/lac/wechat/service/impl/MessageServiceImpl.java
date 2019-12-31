@@ -60,7 +60,13 @@ public class MessageServiceImpl implements MessageService {
                         ",纬度：" + message.getLatitude() +
                         ",精度：" + message.getPrecision() + "]]></Content>";
             } else if (message.getEvent().equals("CLICK")) {
-                content = "<Content><![CDATA[用户点击了菜单:" + message.getEventKey() + "]]></Content>";
+                if (message.getEventKey().equals("menu23")) {
+                    content = "<Content><![CDATA[成功赞助1毛]]></Content>";
+                } else if (message.getEventKey().equals("menu11")) {
+                    content = "<Content><![CDATA[期待中~~]]></Content>";
+                } else {
+                    content = "<Content><![CDATA[用户点击了菜单:" + message.getEventKey() + "]]></Content>";
+                }
             } else if (message.getEvent().equals("VIEW")) {
                 content = "<Content><![CDATA[用户点击了跳转视图:" + message.getEventKey() + "]]></Content>";
             }
@@ -79,7 +85,6 @@ public class MessageServiceImpl implements MessageService {
         log.info("{}", replayXml);
         return replayXml.toString();
     }
-
 
 
 }

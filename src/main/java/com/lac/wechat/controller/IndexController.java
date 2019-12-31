@@ -1,12 +1,14 @@
 package com.lac.wechat.controller;
 
 import com.lac.wechat.service.ApiService;
+import com.lac.wechat.utils.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -25,8 +27,8 @@ public class IndexController {
     private ApiService apiService;
 
     @RequestMapping("/list.do")
-    public String index(ModelMap map) {
-        map.putAll(apiService.fetchJsSdk());
+    public String index(HttpServletRequest request,ModelMap map) {
+        map.putAll(apiService.fetchJsSdk(request.getRequestURL().toString()));
         return "/search.html";
     }
 }

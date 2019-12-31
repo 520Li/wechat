@@ -6,22 +6,27 @@
       "key": "menu11"
     },
     {
-      "name": "菜单二",
+      "name": "楼宇项目",
       "sub_button": [
         {
           "type": "view",
-          "name": "百度一下~",
-          "url": "http://www.baidu.com"
+          "name": "楼宇app下载",
+          "url": "http://103.121.165.198:8002/appDownload/toAppDownloadPage.do"
         },
         {
-          "name": "发送位置",
-          "type": "location_select",
+          "type": "view",
+          "name": "楼宇web",
+          "url": "http://103.121.165.198:8002/"
+        },
+        {
+          "name": "赞助一下~",
+          "type": "click",
           "key": "menu23"
         },
         {
-          "type": "click",
-          "name": "赞一下我们",
-          "key": "menu25"
+          "type": "view",
+          "name": "楼宇app在线",
+          "url": "http://67588154.ngrok.io/search/list.do"
         }
       ]
     },

@@ -51,8 +51,8 @@ public class MenuServiceImpl implements MenuService {
      */
     private void delMenu() {
         AccessToken accessToken = apiService.fetchAccessToken();
-        getMenuUrl = getMenuUrl.replace("ACCESS_TOKEN", accessToken.getAccess_token());
-        delMenuUrl = delMenuUrl.replace("ACCESS_TOKEN", accessToken.getAccess_token());
+        getMenuUrl = String.format(getMenuUrl,accessToken.getAccess_token());
+        delMenuUrl = String.format(delMenuUrl,accessToken.getAccess_token());
         String result = HttpClientUtil.doGet(delMenuUrl, null);
         //log.info(result);
     }

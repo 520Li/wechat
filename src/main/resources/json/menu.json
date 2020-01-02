@@ -1,52 +1,62 @@
 {
   "button": [
     {
-      "type": "click",
-      "name": "戳我一下~~",
-      "key": "menu11"
+      "type": "view",
+      "name": "咱.社区",
+      "url": "http://6b009d42.ngrok.io/first/index.do"
     },
     {
-      "name": "楼宇项目",
+      "name": "办事指南",
       "sub_button": [
         {
           "type": "view",
-          "name": "楼宇app下载",
-          "url": "http://103.121.165.198:8002/appDownload/toAppDownloadPage.do"
+          "name": "办事指南",
+          "url": "http://6b009d42.ngrok.io/second/guide.do"
         },
         {
-          "type": "view",
-          "name": "楼宇web",
-          "url": "http://103.121.165.198:8002/"
-        },
-        {
-          "name": "赞助一下~",
           "type": "click",
-          "key": "menu23"
+          "name": "线上服务预约",
+          "key": "线上服务预约"
+        },
+        {
+          "type": "click",
+          "name": "线上活动报名",
+          "key": "线上活动报名"
         },
         {
           "type": "view",
           "name": "楼宇app在线",
-          "url": "http://67588154.ngrok.io/search/list.do"
+          "url": "http://6b009d42.ngrok.io/search/list.do"
         }
       ]
     },
     {
-      "name": "菜单三",
+      "name": "智慧生活",
       "sub_button": [
         {
-          "type": "pic_sysphoto",
-          "name": "系统拍照发图",
-          "key": "rselfmenu_1_0"
+          "type": "click",
+          "name": "社区接诉即办",
+          "key": "社区接诉即办"
         },
         {
-          "type": "pic_photo_or_album",
-          "name": "拍照或者相册发图",
-          "key": "rselfmenu_1_1"
+          "type": "click",
+          "name": "电子阅览",
+          "key": "电子阅览"
         },
         {
-          "type": "pic_weixin",
-          "name": "微信相册发图",
-          "key": "rselfmenu_1_2"
+          "type": "click",
+          "name": "公益积分",
+          "key": "公益积分"
+        },
+        {
+          "type": "click",
+          "name": "一刻钟生活圈",
+          "key": "一刻钟生活圈"
+        },
+        {
+          "type": "click",
+          "name": "志愿者招募",
+          "key": "志愿者招募"
         }
       ]
     }

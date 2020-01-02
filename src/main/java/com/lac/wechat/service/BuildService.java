@@ -9,4 +9,6 @@ public interface BuildService {
 
 
     public List<BusBuildingInfo> getBuList();
+
+    public List<BusBuildingInfo> getEnergyList();
 }

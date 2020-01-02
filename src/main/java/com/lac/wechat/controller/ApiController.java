@@ -62,6 +62,14 @@ public class ApiController {
         }
     }
 
+
+    /**
+     * 接收服务器信息
+     * @param param
+     * @param request
+     * @param response
+     * @throws Exception
+     */
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public void message(GetParam param, HttpServletRequest request, HttpServletResponse response) throws Exception {
         boolean flag = checkParam(param);
@@ -69,10 +77,7 @@ public class ApiController {
             response.sendError(500, "认证失败");
         }
         String xmlStr = RequestUtil.ReadAsChars(request);
-        //log.info("{}", xmlStr);
         String jsonStr = XmlUtil.xml2Json(xmlStr).toString();
-        //log.info("{}", jsonStr);
-
         //获取接收消息
         Message message = formatJsonStr(jsonStr);
         //自定义回复消息

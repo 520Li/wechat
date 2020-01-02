@@ -23,4 +23,11 @@ public class BuildServiceImpl implements BuildService {
         List<BusBuildingInfo> infos = busBuildingInfoMapper.selectList(wrapper);
         return infos;
     }
+
+    @Override
+    public List<BusBuildingInfo> getEnergyList() {
+        QueryWrapper<BusBuildingInfo> wrapper = new QueryWrapper<>();
+        List<BusBuildingInfo> infos = busBuildingInfoMapper.selectList(wrapper);
+        return infos;
+    }
 }

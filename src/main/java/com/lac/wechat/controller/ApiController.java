@@ -65,6 +65,7 @@ public class ApiController {
 
     /**
      * 接收服务器信息
+     *
      * @param param
      * @param request
      * @param response

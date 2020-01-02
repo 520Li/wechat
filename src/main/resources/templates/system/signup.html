@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>实名注册</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>-->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.css">
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+
+    <script>
+
+        $(document).on('click', '#img', function () {
+            $("#upload").click();
+        })
+        $(document).on('change', '#upload', function () {
+            var file = $("#upload").get(0).files[0];
+            if (!file) {
+                return;
+            }
+            var formdata = new FormData();
+            formdata.append('file', file);
+            $.ajax({
+                url: "/file.do",
+                type: 'POST',
+                data: formdata,
+                dataType: 'JSON',
+                processData: false,
+                contentType: false,
+                async: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data.flag) {
+                        $('input[name="userPath"]').val(data.data);
+                        //将上传的文件回显
+                        $("#img").css("background-image", "url(" + data.data + ")");
+                        $.toast(data.msg);
+                    } else {
+                        $.toast(data.msg, "forbidden");
+                    }
+                }
+            })
+        })
+
+
+        var i = 60;
+        var smsback = "";
+
+        function getSms() {
+            var mobileReg = /^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\d{8}$/;
+            var mobile = $("input[name=userIphone]").val();
+            if (!mobileReg.test(mobile)) {
+                $.toptip("请填写正确的手机号码", 'warning');
+                return;
+            }
+            if (i == 60) {
+                changeMsg();
+            } else {
+                return;
+            }
+            $.ajax({
+                url: "/sendSms.do",
+                data: {mobile: mobile},
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    $.alert(data.data);
+                }
+            });
+        }
+
+        function changeMsg() {
+            if (i > 0) {
+                $("#sendCode").html(i + "秒后再次发送");
+                i--;
+                setTimeout('changeMsg()', 1000);
+            } else {
+                $("#sendCode").html("获取验证码");
+                i = 60;
+            }
+
+        }
+
+
+        function signup() {
+            $.ajax({
+                url: "/signup.do",
+                data: $("form").serialize(),
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    $.alert(data.data);
+                }
+            })
+        }
+
+
+    </script>
+
+</head>
+<body>
+<form >
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">用户头像：</label></div>
+            <div class="weui-cell__bd">
+                <div id="img" class="weui-uploader__file" style="background-image:url(/images/moren.jpg)"></div>
+                <div class="weui-uploader__input-box" style="display: none">
+                    <input id="upload" class="weui-uploader__input" type="file" accept="image/*">
+                    <input type="text" name="userPath">
+                </div>
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">姓名：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入姓名">
+            </div>
+        </div>
+        <div class="weui-cell weui-cell_select weui-cell_select-after">
+            <div class="weui-cell__hd">
+                <label for="" class="weui-label">证件类型：</label>
+            </div>
+            <div class="weui-cell__bd">
+                <select class="weui-select" name="select2">
+                    <option value="1">身份证</option>
+                    <option value="2">护照</option>
+                    <option value="3">回乡证</option>
+                    <option value="4">台胞证</option>
+                </select>
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">证件号码：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入证件号码">
+            </div>
+        </div>
+        <div class="weui-cell weui-cell_vcode">
+            <div class="weui-cell__hd">
+                <label class="weui-label">手机号：</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input name="userIphone" class="weui-input" type="tel" placeholder="请输入手机号">
+            </div>
+            <div class="weui-cell__ft">
+                <button id="sendCode" class="weui-vcode-btn" onclick="getSms()">发送验证码</button>
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">手机验证码：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入验证码">
+            </div>
+        </div>
+        <!-- <div class="weui-cell">
+             <div class="weui-cell__hd"><label for="" class="weui-label">日期</label></div>
+             <div class="weui-cell__bd">
+                 <input class="weui-input" type="date" value="">
+             </div>
+         </div>-->
+        <!--<div class="weui-cell">
+            <div class="weui-cell__hd"><label for="" class="weui-label">日期</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="datetime-local" value="" placeholder="请选择日期">
+            </div>
+        </div>-->
+        <!--<div class="weui-cell weui-cell_vcode">
+            <div class="weui-cell__hd"><label class="weui-label">验证码</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="number" placeholder="请输入验证码">
+            </div>
+            <div class="weui-cell__ft">
+                <img class="weui-vcode-img" src="./images/vcode.jpg">
+            </div>
+        </div>-->
+
+        <!--<div class="weui-cells__title">文本域</div>-->
+        <!--<div class="weui-cell">
+            <div class="weui-cell__bd">
+                <textarea class="weui-textarea" placeholder="请输入日报内容" rows="8"></textarea>
+                &lt;!&ndash;<div class="weui-textarea-counter"><span>0</span>/200</div>&ndash;&gt;
+            </div>
+        </div>-->
+        <div class="weui-btn-area">
+            <a class="weui-btn weui-btn_primary" href="javascript:" onclick="signup()">注册</a>
+        </div>
+    </div>
+</form>
+
+</body>
+</html>

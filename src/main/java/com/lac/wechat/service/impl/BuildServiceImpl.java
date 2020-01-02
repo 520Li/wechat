@@ -20,6 +20,7 @@ public class BuildServiceImpl implements BuildService {
     @Override
     public List<BusBuildingInfo> getBuList() {
         QueryWrapper<BusBuildingInfo> wrapper = new QueryWrapper<>();
+        wrapper.last("limit 0,10");
         List<BusBuildingInfo> infos = busBuildingInfoMapper.selectList(wrapper);
         return infos;
     }
@@ -27,6 +28,7 @@ public class BuildServiceImpl implements BuildService {
     @Override
     public List<BusBuildingInfo> getEnergyList() {
         QueryWrapper<BusBuildingInfo> wrapper = new QueryWrapper<>();
+        wrapper.last("limit 0,10");
         List<BusBuildingInfo> infos = busBuildingInfoMapper.selectList(wrapper);
         return infos;
     }

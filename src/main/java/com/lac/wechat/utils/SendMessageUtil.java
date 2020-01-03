@@ -21,8 +21,8 @@ import java.util.Random;
 public class SendMessageUtil {
     static final String product = "Dysmsapi";
     static final String domain = "dysmsapi.aliyuncs.com";
-    static final String accessKeyId = "";
-    static final String accessKeySecret = "";
+    static final String accessKeyId = "LTAI4FvC5J2FL78iGbV3kwag";
+    static final String accessKeySecret = "MGhjEX4fxPcgWgc2QWk85lfHuQT3zY";
 
 
     public static SendSmsResponse sendSms(Message message) throws ClientException {

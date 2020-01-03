@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
@@ -72,11 +73,13 @@ public class ApiController {
      * @throws Exception
      */
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public void message(GetParam param, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void message(GetParam param, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
         boolean flag = checkParam(param);
         if (!flag) {
             response.sendError(500, "认证失败");
         }
+
+
         String xmlStr = RequestUtil.ReadAsChars(request);
         String jsonStr = XmlUtil.xml2Json(xmlStr).toString();
         //获取接收消息

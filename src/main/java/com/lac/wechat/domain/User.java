@@ -1,5 +1,6 @@
 package com.lac.wechat.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,8 +19,8 @@ import java.util.Date;
 @Data
 public class User {
 
-    @TableId
-    private Long userId; //微信用户 openid
+    @TableId(type = IdType.UUID)
+    private String userId; //微信用户 openid
 
     private String userName;
     private String userType;

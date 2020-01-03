@@ -14,4 +14,6 @@ public interface UserService {
     public User getUserById(String id);
 
     void insertUser(User user);
+
+    boolean checkIphone(User user);
 }

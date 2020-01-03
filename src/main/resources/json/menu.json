@@ -3,7 +3,7 @@
     {
       "type": "view",
       "name": "咱.社区",
-      "url": "http://7f628c22.ngrok.io/first/index.do"
+      "url": "http://85887e28.ngrok.io/first/index.do"
     },
     {
       "name": "办事指南",
@@ -11,22 +11,22 @@
         {
           "type": "view",
           "name": "办事指南",
-          "url": "http://7f628c22.ngrok.io/second/guide.do"
+          "url": "http://85887e28.ngrok.io/second/guide.do"
         },
         {
           "type": "view",
           "name": "线上服务预约",
-          "url": "http://7f628c22.ngrok.io/second/appointment.do"
+          "url": "http://85887e28.ngrok.io/second/appointment.do"
         },
         {
           "type": "view",
           "name": "线上活动报名",
-          "url": "http://7f628c22.ngrok.io/second/apply.do"
+          "url": "http://85887e28.ngrok.io/second/apply.do"
         },
         {
           "type": "view",
           "name": "楼宇app在线",
-          "url": "http://7f628c22.ngrok.io/search/list.do"
+          "url": "http://85887e28.ngrok.io/search/list.do"
         }
       ]
     },

@@ -1,10 +1,14 @@
 package com.lac.wechat.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lac.wechat.dao.UserMapper;
 import com.lac.wechat.domain.User;
 import com.lac.wechat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * ClassName: UserServiceImpl <br/>
@@ -27,5 +31,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void insertUser(User user) {
         userMapper.insert(user);
+    }
+
+    @Override
+    public boolean checkIphone(User user) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(User::getUserIphone, user.getUserIphone());
+        List<User> list = userMapper.selectList(wrapper);
+        return list.size() == 0;
     }
 }

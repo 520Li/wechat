@@ -10,6 +10,90 @@
     <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.css">
     <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+
+    <style>
+        .weui-media-box_appmsg .weui-media-box__hd {
+            width: 80px;
+        }
+
+        .weui-media-box {
+            padding: 10px;
+        }
+    </style>
+
+    <script>
+        init();
+
+        function init() {
+            $.ajax({
+                url: "/first/article.do",
+                data: {type: "menu_02"},
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    if (data.flag) {
+                        var tab1 = "";
+                        var tab2 = "";
+                        var tab3 = "";
+                        var tab4 = "";
+                        var tab5 = "";
+                        $.each(data.data, function (index, obj) {
+                            var template;
+                            if (obj.arIspath === '02') {//文章带图片
+                                template = getTemplate('block', obj);
+                            } else {
+                                template = getTemplate('none', obj);
+                            }
+                            if (obj.arType === 'YLYX') {
+                                tab1 += template;
+                            } else if (obj.arType === 'LNR') {
+                                tab2 += template;
+                            } else if (obj.arType === 'JS') {
+                                tab3 += template;
+                            } else if (obj.arType === 'JZZ') {
+                                tab4 += template;
+                            } else if (obj.arType === 'CJR') {
+                                tab5 += template;
+                            }
+                        })
+                        fetchHtml(tab1, 'tab1', '暂无指南');
+                        fetchHtml(tab2, 'tab2', '暂无指南');
+                        fetchHtml(tab3, 'tab3', '暂无指南');
+                        fetchHtml(tab4, 'tab4', '暂无指南');
+                        fetchHtml(tab5, 'tab5', '暂无指南');
+                    } else {
+                        $.toast(data.msg, "error");
+                    }
+                }
+            })
+        }
+
+        function getTemplate(style, obj) {
+            return "<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
+                "                <div style=\"display:" + style + "\" class=\"weui-media-box__hd\">\n" +
+                "                    <img style='width: 80px' class=\"weui-media-box__thumb\" src=\""+ obj.arFirstpath +"\">\n" +
+                "                </div>\n" +
+                "                <div class=\"weui-media-box weui-media-box_text\">\n" +
+                "                    <h4 class=\"weui-media-box__title\">" + obj.arTitle + "</h4>\n" +
+                "                    <ul class=\"weui-media-box__info\">\n" +
+                "                        <li class=\"weui-media-box__info__meta\">" + obj.createTime + "</li>\n" +
+                "                        <li class=\"weui-media-box__info__meta\" style=\"position: fixed;right: 10px;\">" + obj.arOrg + "</li>\n" +
+                "                    </ul>\n" +
+                "                </div>\n" +
+                "            </a>";
+        }
+
+        function fetchHtml(tab, id, text) {
+            if (tab !== '') {
+                $("#" + id).html(tab);
+            } else {
+                $("#" + id).html("<div class=\"weui-loadmore weui-loadmore_line\">\n" +
+                    "                <span class=\"weui-loadmore__tips\">" + text + "</span>\n" +
+                    "            </div>");
+            }
+        }
+
+    </script>
 </head>
 <body>
 <div class="weui-tab">
@@ -32,23 +116,19 @@
     </div>
     <div class="weui-tab__bd">
         <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
-            <h1>一老一小</h1>
         </div>
         <div id="tab2" class="weui-tab__bd-item">
-            <h1>老年人</h1>
         </div>
         <div id="tab3" class="weui-tab__bd-item">
-            <h1>计生</h1>
         </div>
         <div id="tab4" class="weui-tab__bd-item">
-            <h1>居住证</h1>
         </div>
         <div id="tab5" class="weui-tab__bd-item">
-            <h1>残疾人</h1>
         </div>
     </div>
 </div>
-
-
 </body>
+<script>
+
+</script>
 </html>

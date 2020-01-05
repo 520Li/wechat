@@ -10,7 +10,6 @@ public class BusBuildingInfo {
 
     private String bbiId;
     private String bbiBuName;
-
     private String bbiEnergyTag;
 
 }

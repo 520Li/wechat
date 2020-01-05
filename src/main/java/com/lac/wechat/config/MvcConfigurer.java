@@ -43,7 +43,7 @@ public class MvcConfigurer implements WebMvcConfigurer {
     //格式化
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addFormatter(new DateFormatter("yyyy-MM-dd HH:mm:ss"));
+        registry.addFormatter(new DateFormatter("yyyy-MM-dd HH:mm"));
         //registry.addFormatter(new DateFormatter("yyyy-MM-dd"));
     }
 
@@ -95,9 +95,9 @@ public class MvcConfigurer implements WebMvcConfigurer {
             User user = (User) request.getSession().getAttribute("login_user");
             if (null == user) {
                 //授权 获取code
-                getCodeUrl = String.format(getCodeUrl, url);
+                String getCodeUrlCopy = String.format(getCodeUrl, url);
                 //getCodeUrl = String.format(getCodeUrl, /*URLEncoder.encode(url, "GBK")*/url);
-                response.sendRedirect(getCodeUrl);
+                response.sendRedirect(getCodeUrlCopy);
                 return false;
             } else {
                 return true;
@@ -126,8 +126,8 @@ public class MvcConfigurer implements WebMvcConfigurer {
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
             String code = request.getParameter("code");
             String url = request.getParameter("state");
-            getOpenIdUrl = String.format(getOpenIdUrl, code);
-            String result = HttpClientUtil.doGet(getOpenIdUrl, null);
+            String getOpenIdUrlCopy = String.format(getOpenIdUrl, code);
+            String result = HttpClientUtil.doGet(getOpenIdUrlCopy, null);
             /*
             {
               "access_token":"ACCESS_TOKEN",

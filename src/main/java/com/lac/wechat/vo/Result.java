@@ -10,6 +10,8 @@ public class Result {
 
     private boolean flag; //状态码, 0表示成功
 
+    private Integer code;//状态码
+
     private String msg;  //提示信息
 
     private Object data; // 当前数据
@@ -34,10 +36,17 @@ public class Result {
     }
 
 
-    public Result(Object data) {
-        this.flag = true;
-        this.data = data;
-        this.msg = "";
+    public Result(Integer code) {
+        this.flag = false;
+        this.code = code;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
     public boolean isFlag() {

@@ -16,13 +16,6 @@
         @ var id = session.openid;
         @ var url = session.url;
 
-        @ if(session.login_user!=null){
-            $("#sendCode").attr("disabled", "true");
-            $("#sign").css("pointer-events", "none");
-            $("#sign").attr("disabled", true);
-        @}
-
-
         function sc() {
             $("#upload").click();
         }
@@ -201,7 +194,8 @@
                 <input name="userIphone" class="weui-input" type="tel" placeholder="请输入手机号">
             </div>
             <div class="weui-cell__ft">
-                <button type="button" id="sendCode" class="weui-vcode-btn" onclick="getSms()">发送验证码</button>
+                <button type="button"
+                        id="sendCode" class="weui-vcode-btn" onclick="getSms()">发送验证码</button>
             </div>
         </div>
         <div class="weui-cell">
@@ -240,10 +234,13 @@
             </div>
         </div>-->
         <div class="weui-btn-area">
-            <a id="sign" class="weui-btn weui-btn_primary" href="javascript:" onclick="signup()">注册</a>
+            <a id="sign"
+               class="weui-btn weui-btn_primary" href="javascript:" onclick="signup()">注册</a>
         </div>
     </div>
 </form>
 
 </body>
+<script>
+</script>
 </html>

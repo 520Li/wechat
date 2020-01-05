@@ -2,7 +2,9 @@ package com.lac.wechat.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
+import com.lac.wechat.domain.Appoint;
 import com.lac.wechat.domain.User;
+import com.lac.wechat.service.ArticleService;
 import com.lac.wechat.service.UserService;
 import com.lac.wechat.utils.SendMessageUtil;
 import com.lac.wechat.vo.Message;
@@ -12,9 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -27,6 +27,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -35,6 +36,8 @@ import java.util.UUID;
 public class CommunityController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private ArticleService articleService;
 
 
     /**
@@ -42,7 +45,7 @@ public class CommunityController {
      *
      * @return
      */
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @GetMapping(value = "/login")
     public String login(HttpServletRequest request) {
         return "/system/signup.html";
     }
@@ -53,10 +56,14 @@ public class CommunityController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "/signup.do", method = RequestMethod.POST)
+    @PostMapping("/signup.do")
     @ResponseBody
     public Result signup(User user, HttpSession session) {
+        if (null == session.getAttribute("openid")) {
+            return new Result(false, "该页面已失效！");
+        }
         if (StringUtils.isBlank(user.getUserId())) {
+            log.error("{}", "openid为空，认证失败");
             return new Result(false, "认证失败!");
         }
         boolean flag = userService.checkIphone(user);
@@ -64,6 +71,8 @@ public class CommunityController {
             return new Result(false, "该手机号已实名认证!");
         }
         userService.insertUser(user);
+        session.removeAttribute("openid");
+        session.removeAttribute("url");
         session.setAttribute("login_user", user);
         return new Result(true, "认证成功！");
     }
@@ -74,10 +83,12 @@ public class CommunityController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/file.do", method = RequestMethod.POST)
+    @PostMapping("/file.do")
     @ResponseBody
-    public Result upload(HttpServletRequest request) {
-
+    public Result upload(HttpSession session, HttpServletRequest request) {
+        if (null == session.getAttribute("openid")) {
+            return new Result(false, "该页面已失效！");
+        }
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile file = multipartRequest.getFile("file");
         FileChannel outChannel = null;
@@ -124,9 +135,12 @@ public class CommunityController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/sendSms.do", method = RequestMethod.POST)
+    @PostMapping("/sendSms.do")
     @ResponseBody
-    public Result sendSms(String mobile, HttpServletRequest request, HttpServletResponse response) {
+    public Result sendSms(String mobile, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+        if (null == session.getAttribute("openid")) {
+            return new Result(false, "该页面已失效！");
+        }
         if (StringUtils.isBlank(mobile)) {
             return new Result(false, "手机号不能为空！");
         }
@@ -151,26 +165,61 @@ public class CommunityController {
 
     }
 
-
-    @RequestMapping("/second/appointment.do")
+    /**
+     * 预约界面
+     *
+     * @param request
+     * @return
+     */
+    @GetMapping("/second/appointment.do")
     public String appointment(HttpServletRequest request) {
         return "/menu_02/appointment.html";
     }
 
-    @RequestMapping("/second/apply.do")
-    public String apply(HttpServletRequest request) {
-        return "/menu_02/apply.html";
+    /**
+     * 新增预约
+     *
+     * @param appoint
+     * @return
+     */
+    @PostMapping("/second/newAppoint.do")
+    @ResponseBody
+    public Result newAppoint(Appoint appoint) {
+        userService.saveAppoint(appoint);
+        return new Result(true, "预约成功！");
     }
 
+    /**
+     * 查询用户预约列表
+     *
+     * @return
+     */
+    @PostMapping("/second/initAppoint.do")
+    @ResponseBody
+    public Result initAppoint() {
+        return new Result(true, "查询成功", userService.findAppointByUser());
+    }
 
     /**
      * 咱。社区
      *
      * @return
      */
-    @RequestMapping("/first/index.do")
+    @GetMapping("/first/index.do")
     public String index(HttpServletRequest request) {
         return "/menu_01/index.html";
+    }
+
+    /**
+     * 获取文章列表
+     *
+     * @param type
+     * @return
+     */
+    @PostMapping("/first/article.do")
+    @ResponseBody
+    public Result article(String type) {
+        return new Result(true, "查询成功！", articleService.getList(type));
     }
 
 
@@ -179,9 +228,49 @@ public class CommunityController {
      *
      * @return
      */
-    @RequestMapping("/second/guide.do")
+    @GetMapping("/second/guide.do")
     public String guide() {
         return "/menu_02/guide.html";
+    }
+
+    /**
+     * 线上活动
+     *
+     * @return
+     */
+    @GetMapping("/second/report.do")
+    public String toReport() {
+        return "/menu_02/report.html";
+    }
+
+    /**
+     * 获取线上活动列表
+     *
+     * @return
+     */
+    @PostMapping("/second/eventList.do")
+    @ResponseBody
+    public Result event(String query) {
+        return new Result(true, "查询成功！", userService.getEventList(query));
+    }
+
+
+    /**
+     * 活动详细
+     */
+    @GetMapping("/second/eventDis.do")
+    public String eventDis(String eventId, ModelMap map) {
+        map.put("event", userService.getEventDis(eventId));
+        return "/menu_02/event.html";
+    }
+
+    /**
+     * 用户报名活动
+     */
+    @PostMapping("/second/report.do")
+    @ResponseBody
+    public Result report(String eventId) {
+        return userService.reportEvent(eventId);
     }
 
 }

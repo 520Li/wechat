@@ -3,7 +3,7 @@
     {
       "type": "view",
       "name": "咱.社区",
-      "url": "http://e26ad929.ngrok.io/first/index.do"
+      "url": "%1$s/first/index.do"
     },
     {
       "name": "办事指南",
@@ -11,22 +11,22 @@
         {
           "type": "view",
           "name": "办事指南",
-          "url": "http://e26ad929.ngrok.io/second/guide.do"
+          "url": "%1$s/second/guide.do"
         },
         {
           "type": "view",
           "name": "线上服务预约",
-          "url": "http://e26ad929.ngrok.io/second/appointment.do"
+          "url": "%1$s/second/appointment.do"
         },
         {
           "type": "view",
           "name": "线上活动报名",
-          "url": "http://e26ad929.ngrok.io/second/report.do"
+          "url": "%1$s/second/report.do"
         },
         {
           "type": "view",
           "name": "楼宇app在线",
-          "url": "http://e26ad929.ngrok.io/search/list.do"
+          "url": "%1$s/search/list.do"
         }
       ]
     },
@@ -36,27 +36,27 @@
         {
           "type": "view",
           "name": "社区接诉即办",
-          "url": "http://e26ad929.ngrok.io/third/appeal.do"
+          "url": "%1$s/third/appeal.do"
         },
         {
           "type": "view",
           "name": "电子阅览",
-          "url": "http://e26ad929.ngrok.io/third/read.do"
+          "url": "%1$s/third/read.do"
         },
         {
           "type": "view",
           "name": "公益积分",
-          "url": "http://e26ad929.ngrok.io/third/benefit.do"
+          "url": "%1$s/third/benefit.do"
         },
         {
           "type": "view",
           "name": "一刻钟生活圈",
-          "url": "http://e26ad929.ngrok.io/third/home.do"
+          "url": "%1$s/third/home.do"
         },
         {
           "type": "view",
           "name": "志愿者招募",
-          "url": "http://e26ad929.ngrok.io/third/volunteer.do"
+          "url": "%1$s/third/volunteer.do"
         }
       ]
     }

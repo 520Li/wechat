@@ -23,6 +23,8 @@ public class MenuServiceImpl implements MenuService {
     private String getMenuUrl;
     @Value("${delMenu}")
     private String delMenuUrl;
+    @Value("${url}")
+    private String url;
     @Autowired
     private ApiService apiService;
 
@@ -41,8 +43,10 @@ public class MenuServiceImpl implements MenuService {
         buf.get(dst);
         buf.clear();
         inChannel.close();
-        log.info(new String(dst));
-        String result = HttpClientUtil.sendJsonStr(getMenuUrl, new String(dst));
+        String val = new String(dst);
+        val = String.format(val, url);
+        log.info("{}", val);
+        String result = HttpClientUtil.sendJsonStr(getMenuUrl, val);
         //log.info(result);
     }
 
@@ -51,9 +55,10 @@ public class MenuServiceImpl implements MenuService {
      */
     private void delMenu() {
         AccessToken accessToken = apiService.fetchAccessToken();
-        getMenuUrl = String.format(getMenuUrl,accessToken.getAccess_token());
-        delMenuUrl = String.format(delMenuUrl,accessToken.getAccess_token());
+        getMenuUrl = String.format(getMenuUrl, accessToken.getAccess_token());
+        delMenuUrl = String.format(delMenuUrl, accessToken.getAccess_token());
         String result = HttpClientUtil.doGet(delMenuUrl, null);
         //log.info(result);
     }
+
 }

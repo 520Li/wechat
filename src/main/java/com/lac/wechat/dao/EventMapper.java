@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface EventMapper extends BaseMapper<Event> {
 
-    public List<Event> getEventByQuery(@Param("query") String query);
+    public List<Event> getEventByQuery(@Param("query") String query, @Param("userId") String userId);
 
     Event selectByEventId(@Param("eventId") String eventId, @Param("userId") String userId);
 }

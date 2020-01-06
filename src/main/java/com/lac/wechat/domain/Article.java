@@ -33,4 +33,7 @@ public class Article {
     private Date createTime;
     private Date updateTime;
 
+    private String arMajorType;
+    private String arLowType;
+
 }

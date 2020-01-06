@@ -27,6 +27,9 @@ public class User {
     private String userCard;
     private String userIphone;
     private String userPath;
+    private Integer userCore;
+    private Integer userSum;
+
     private Date createTime;
     private Date updateTime;
 

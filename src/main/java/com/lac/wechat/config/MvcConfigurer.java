@@ -40,6 +40,7 @@ public class MvcConfigurer implements WebMvcConfigurer {
     private String getOpenIdUrl;
 
 
+
     //格式化
     @Override
     public void addFormatters(FormatterRegistry registry) {
@@ -56,7 +57,7 @@ public class MvcConfigurer implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new SessionHandlerInterceptor())
-                .addPathPatterns("/second/apply.do")
+                .addPathPatterns("/second/report.do")
                 .addPathPatterns("/second/appointment.do");
 
         registry.addInterceptor(new OpenIdInterceptor())

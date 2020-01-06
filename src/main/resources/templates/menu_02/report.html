@@ -21,12 +21,16 @@
         $(document).on('click', "#tabs a", function () {
             $("#tabs a").removeClass("weui-bar__item--on");
             $(this).addClass("weui-bar__item--on");
-            queryList($(this).attr("query"));
+            queryList($(this).attr("query"), 'event');
         })
+        /*$(document).on('click', "#tab2", function () {
+            queryList($(this).attr("query"), 'report');
+        })*/
 
-        queryList("1");
+        queryList('1', 'event');
+        queryList('5', 'report');
 
-        function queryList(query) {
+        function queryList(query, document) {
             $.ajax({
                 url: "/second/eventList.do",
                 data: {query: query},
@@ -37,7 +41,7 @@
                         var html = "";
                         if (data.data.length > 0) {
                             $.each(data.data, function (index, obj) {
-                                html += "<a href=\"/second/eventDis.do?eventId="+ obj.eventId +"\" class=\"weui-media-box_appmsg\">" +
+                                html += "<a href=\"/second/eventDis.do?eventId=" + obj.eventId + "\" class=\"weui-media-box_appmsg\">" +
                                     "<div class=\"weui-panel__bd\">\n" +
                                     "                        <div class=\"weui-media-box weui-media-box_text\">\n" +
                                     "                            <h4 class=\"weui-media-box__title\">" + obj.eventName + "</h4>\n" +
@@ -51,9 +55,9 @@
                                 "                <span class=\"weui-loadmore__tips\">暂无活动</span>\n" +
                                 "            </div>";
                         }
-                        $("#event").html(html);
+                        $("#" + document).html(html);
                     } else {
-                        $.toast(data.msg, "error");
+                        $.toast(data.msg, "forbidden");
                     }
                 }
             })
@@ -102,8 +106,10 @@
                 </div>
             </div>
         </div>
-        <div id="tab2" class="weui-tab__bd-item">
+        <div id="tab2" query="5" class="weui-tab__bd-item">
+            <div id="report" class="weui-tab__bd">
 
+            </div>
         </div>
     </div>
 </div>

@@ -1,5 +1,6 @@
 package com.lac.wechat.service;
 
+import com.lac.wechat.domain.Appeal;
 import com.lac.wechat.domain.Appoint;
 import com.lac.wechat.domain.Event;
 import com.lac.wechat.domain.User;
@@ -68,4 +69,16 @@ public interface UserService {
      * 报名活动
      */
     Result reportEvent(String eventId);
+
+    /**
+     * 用户事件举报
+     */
+    void appealByUser(Appeal appeal);
+
+    /**
+     * 根据用户查询事件举报列表
+     */
+    List<Appeal> getAppealByUser();
+
+
 }

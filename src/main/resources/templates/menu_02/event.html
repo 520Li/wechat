@@ -37,7 +37,19 @@
         }
     </style>
     <script>
+        var flag = false;
+
         $(document).on('click', '#report', function () {
+            if(flag){
+                return;
+            }
+            flag = true;
+
+            @if(session.login_user == null){
+                $.toast("请先登录！", "forbidden");
+                return;
+            @}
+
             $.ajax({
                 url: "/second/report.do",
                 data: {eventId: '${event.eventId!}'},
@@ -46,10 +58,11 @@
                 success: function (data) {
                     if (data.flag) {
                         $.toast(data.msg);
-                        window.location.href = "/second/eventDis.do?eventId=${eventId!}";
+                        window.location.href = "/second/eventDis.do?eventId=${event.eventId!}";
                     } else {
-                        $.toast(data.msg, "error");
+                        $.toast(data.msg, "forbidden");
                     }
+                    flag = false;
                 }
             })
         })

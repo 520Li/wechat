@@ -82,5 +82,14 @@ public enum ArticleType {
         public String toString() {
             return "CJR";
         }
+    },
+    /**
+     * 电子阅览图书
+     */
+    DZYL {
+        @Override
+        public String toString() {
+            return "DZYL";
+        }
     }
 }

@@ -2,14 +2,8 @@ package com.lac.wechat.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.lac.wechat.dao.AppointMapper;
-import com.lac.wechat.dao.EventMapper;
-import com.lac.wechat.dao.EventUserMapper;
-import com.lac.wechat.dao.UserMapper;
-import com.lac.wechat.domain.Appoint;
-import com.lac.wechat.domain.Event;
-import com.lac.wechat.domain.EventUser;
-import com.lac.wechat.domain.User;
+import com.lac.wechat.dao.*;
+import com.lac.wechat.domain.*;
 import com.lac.wechat.service.UserService;
 import com.lac.wechat.vo.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +36,8 @@ public class UserServiceImpl implements UserService {
     private EventMapper eventMapper;
     @Autowired
     private EventUserMapper eventUserMapper;
+    @Autowired
+    private AppealMapper appealMapper;
 
     /**
      * 根据id查询用户
@@ -110,7 +106,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<Event> getEventList(String query) {
-        return eventMapper.getEventByQuery(query);
+        User user = (User) session.getAttribute("login_user");
+        return eventMapper.getEventByQuery(query, user.getUserId());
     }
 
     /**
@@ -137,7 +134,8 @@ public class UserServiceImpl implements UserService {
             event.setEventState("活动已结束");
         }*/
         User user = (User) session.getAttribute("login_user");
-        return eventMapper.selectByEventId(eventId, user.getUserId());
+
+        return eventMapper.selectByEventId(eventId, null == user ? "" : user.getUserId());
     }
 
 
@@ -152,14 +150,50 @@ public class UserServiceImpl implements UserService {
             log.error("{}", "活动id为空！报名活动失败！");
             return new Result(false, "报名失败！");
         }
+
+
+        User user = (User) session.getAttribute("login_user");
+        QueryWrapper<EventUser> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(EventUser::getEventId, eventId).eq(EventUser::getUserId, user.getUserId());
+        List<EventUser> users = eventUserMapper.selectList(wrapper);
+        if (users.size() > 0) {
+            return new Result(false, "您已经报名！");
+        }
+
+
         Event event = eventMapper.selectById(eventId);
         if (compareDate(event.getEventReend(), new Date()) || compareDate(event.getEventEnd(), new Date())) {
             return new Result(false, "活动已结束！");
         }
-        User user = (User) session.getAttribute("login_user");
-        EventUser eventUser = EventUser.builder().eventId(eventId).id(user.getUserId()).sign("01").build();
+
+        EventUser eventUser = EventUser.builder().eventId(eventId).userId(user.getUserId()).sign("01").build();
         eventUserMapper.insert(eventUser);
         return new Result(true, "报名成功！");
+    }
+
+    /**
+     * 新增事件举报
+     */
+    @Override
+    public void appealByUser(Appeal appeal) {
+        User user = (User) session.getAttribute("login_user");
+        appeal.setCreateTime(new Date());
+        appeal.setAppealUser(user.getUserId());
+        appealMapper.insert(appeal);
+    }
+
+    /**
+     * 根据用户查询举报列表
+     *
+     * @return
+     */
+    @Override
+    public List<Appeal> getAppealByUser() {
+        User user = (User) session.getAttribute("login_user");
+        QueryWrapper<Appeal> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(Appeal::getAppealUser, user.getUserId()).orderByDesc(Appeal::getCreateTime);
+        List<Appeal> appeals = appealMapper.selectList(wrapper);
+        return appeals;
     }
 
 

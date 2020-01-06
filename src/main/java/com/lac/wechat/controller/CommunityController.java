@@ -1,10 +1,13 @@
 package com.lac.wechat.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
+import com.lac.wechat.domain.Appeal;
 import com.lac.wechat.domain.Appoint;
 import com.lac.wechat.domain.User;
 import com.lac.wechat.service.ArticleService;
+import com.lac.wechat.service.GiftService;
 import com.lac.wechat.service.UserService;
 import com.lac.wechat.utils.SendMessageUtil;
 import com.lac.wechat.vo.Message;
@@ -38,6 +41,8 @@ public class CommunityController {
     private UserService userService;
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private GiftService giftService;
 
 
     /**
@@ -85,10 +90,11 @@ public class CommunityController {
      */
     @PostMapping("/file.do")
     @ResponseBody
-    public Result upload(HttpSession session, HttpServletRequest request) {
-        if (null == session.getAttribute("openid")) {
+    public Result upload(String path, HttpSession session, HttpServletRequest request) {
+        /*if (null == session.getAttribute("openid")) {
             return new Result(false, "该页面已失效！");
-        }
+        }*/
+
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile file = multipartRequest.getFile("file");
         FileChannel outChannel = null;
@@ -100,7 +106,7 @@ public class CommunityController {
             }
             //后缀名
             String newName = UUID.randomUUID().toString().replace("-", "").toLowerCase() + suffix;
-            outChannel = FileChannel.open(Paths.get("./target/classes/static/images/signup/" + newName),
+            outChannel = FileChannel.open(Paths.get("./target/classes/static/images/" + path + "/" + newName),
                     StandardOpenOption.WRITE, StandardOpenOption.CREATE);
             ByteBuffer buf = ByteBuffer.allocate((int) file.getSize());
             buf.put(file.getBytes());
@@ -109,7 +115,7 @@ public class CommunityController {
             buf.clear();
 
             // 数据库需要保存：相对路径
-            String relativePath = "/images/signup/" + newName;
+            String relativePath = "/images/" + path + "/" + newName;
             return new Result(true, "上传成功！", relativePath);
         } catch (Exception e) {
             log.error("{}", e.getMessage());
@@ -272,5 +278,83 @@ public class CommunityController {
     public Result report(String eventId) {
         return userService.reportEvent(eventId);
     }
+
+
+    /**
+     * 社区接诉即办
+     */
+    @GetMapping("/third/appeal.do")
+    public String appeal() {
+        return "/menu_03/appeal.html";
+    }
+
+
+    /**
+     * 用户事件举报
+     *
+     * @return
+     */
+    @PostMapping("/third/appeal.do")
+    @ResponseBody
+    public Result appealByUser(Appeal appeal) {
+        userService.appealByUser(appeal);
+        return new Result(true, "提交成功！");
+    }
+
+    /**
+     * 根据用户查举报列表
+     *
+     * @return
+     */
+    @PostMapping("/third/appealList.do")
+    @ResponseBody
+    public Result appealList() {
+        return new Result(true, "查询成功！", userService.getAppealByUser());
+    }
+
+
+    /**
+     * 公益积分
+     */
+    @GetMapping("/third/benefit.do")
+    public String benefit(ModelMap map) {
+        map.put("gifts", giftService.findGift());
+        return "/menu_03/benefit.html";
+    }
+
+    /**
+     * 兑换积分
+     */
+    @PostMapping("/third/exchange.do")
+    @ResponseBody
+    public Result exchange(String gift) {
+        List<Map> gifts = JSONArray.parseArray(gift, Map.class);
+        return giftService.insertGiftLog(gifts);
+    }
+
+    /**
+     * 一刻钟生活圈
+     */
+    @GetMapping("/third/home.do")
+    public String home() {
+        return "/menu_03/home.html";
+    }
+
+    /**
+     * 电子阅览
+     */
+    @GetMapping("/third/read.do")
+    public String read() {
+        return "/menu_03/read.html";
+    }
+
+    /**
+     * 志愿者招募
+     */
+    @GetMapping("/third/volunteer.do")
+    public String volunteer() {
+        return "/menu_03/volunteer.html";
+    }
+
 
 }

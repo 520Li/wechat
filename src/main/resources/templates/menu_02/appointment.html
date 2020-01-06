@@ -16,6 +16,11 @@
 
         //新增新预约
         function appointment() {
+            @if(session.login_user == null){
+                $.toast("请先登录！", "forbidden");
+                return;
+            @}
+
             var flag = true;
             $("form").find("input,select,textarea").each(function () {
                 if ($(this).val().trim() === '') {
@@ -157,8 +162,7 @@
                         </div>
                     </div>
                     <div class="weui-btn-area">
-                        <a id="sign"
-                           class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="appointment()">发起预约</a>
+                        <a id="sign" class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="appointment()">发起预约</a>
                     </div>
                 </div>
 

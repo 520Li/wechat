@@ -24,8 +24,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleMapper articleMapper;
-    private final static String MENU1 = "menu_01";
-    private final static String MENU2 = "menu_02";
+    private final static String MENU1 = "menu_01"; //咱。社区
+    private final static String MENU2 = "menu_02";//办事指南
+    private final static String MENU3 = "menu_03";//电子阅览
 
 
     /**
@@ -44,6 +45,8 @@ public class ArticleServiceImpl implements ArticleService {
             wrapper.lambda().in(Article::getArType,
                     Arrays.asList(ArticleType.YLYX.toString(), ArticleType.LNR.toString(),
                             ArticleType.JS.toString(), ArticleType.JZZ.toString(), ArticleType.CJR.toString()));
+        } else if (menu.equals(MENU3)) {
+            wrapper.lambda().eq(Article::getArType, ArticleType.DZYL.toString());
         }
         return articleMapper.selectList(wrapper);
     }

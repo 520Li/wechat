@@ -3,7 +3,7 @@
 <mapper namespace="com.lac.wechat.dao.EventMapper">
 
 
-    <select id="getEventByQuery" parameterType="java.lang.String" resultType="com.lac.wechat.domain.Event">
+    <select id="getEventByQuery"  resultType="com.lac.wechat.domain.Event">
         select
         event_id as eventId,
         event_name as eventName,
@@ -21,7 +21,7 @@
         event_state as eventState,
         create_time as createTime,
         update_time as updateTime
-        from zly_event where 1=1
+        from zly_event a where 1=1
         <if test="query == 1 ">
             and 1 = 1
         </if>
@@ -33,6 +33,9 @@
         </if>
         <if test="query == 4 ">
             and event_limit = event_real
+        </if>
+        <if test="query == 5 ">
+            and EXISTS (select * from zly_event_user b where a.event_id = b.event_id and b.user_id = #{userId,jdbcType=VARCHAR})
         </if>
         order by event_start asc
     </select>
@@ -51,7 +54,7 @@
         event_text as eventText,
         (case when event_end &gt; now() then '进行中'
         when event_end &lt; now() then '已结束' else '已结束' end ) eventStatus,
-        (case when exists select * from zly_event_user where user_id = #{userId,jdbcType=VARCHAR} then '已报名'
+        (case when exists (select * from zly_event_user b where b.event_id = a.event_id and  user_id = #{userId,jdbcType=VARCHAR}) then '已报名'
         when event_reend &gt; now() and event_limit = event_real then '名额已满'
          when event_reend &gt; now() then '线上报名'
          when event_reend &lt;= now() then '报名已截止'
@@ -60,7 +63,7 @@
          ) eventState,
         create_time as createTime,
         update_time as updateTime
-        from zly_event
+        from zly_event a
         where event_id = #{eventId,jdbcType=VARCHAR}
     </select>
     <!--

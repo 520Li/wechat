@@ -20,4 +20,6 @@ public interface ArticleService {
      * @return
      */
     List<Article> getList(String menu);
+
+    Article getById(String arId);
 }

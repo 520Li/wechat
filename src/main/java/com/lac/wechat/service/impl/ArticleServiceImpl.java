@@ -50,4 +50,9 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return articleMapper.selectList(wrapper);
     }
+
+    @Override
+    public Article getById(String arId) {
+        return articleMapper.selectById(arId);
+    }
 }

@@ -54,11 +54,11 @@
         event_text as eventText,
         (case when event_end &gt; now() then '进行中'
         when event_end &lt; now() then '已结束' else '已结束' end ) eventStatus,
-        (case when exists (select * from zly_event_user b where b.event_id = a.event_id and  user_id = #{userId,jdbcType=VARCHAR}) then '已报名'
+        (case when event_end &lt;= now() then '活动已结束'
+        when exists (select * from zly_event_user b where b.event_id = a.event_id and  user_id = #{userId,jdbcType=VARCHAR}) then '已报名'
+        when event_reend &lt;= now() then '报名已截止'
         when event_reend &gt; now() and event_limit = event_real then '名额已满'
          when event_reend &gt; now() then '线上报名'
-         when event_reend &lt;= now() then '报名已截止'
-         when event_end &lt;= now() then '活动已结束'
          end
          ) eventState,
         create_time as createTime,

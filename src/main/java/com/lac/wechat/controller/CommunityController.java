@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -218,6 +219,19 @@ public class CommunityController {
     public String index(HttpServletRequest request) {
         return "/menu_01/index.html";
     }
+
+    /**
+     * 文章详细页面
+     *
+     * @param arId
+     * @return
+     */
+    @GetMapping("/first/article.do")
+    public String articleDetail(String arId, ModelMap map) {
+        map.put("article", articleService.getById(arId));
+        return "/menu_01/article.html";
+    }
+
 
     /**
      * 获取文章列表

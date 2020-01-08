@@ -80,5 +80,10 @@ public interface UserService {
      */
     List<Appeal> getAppealByUser();
 
+    /**
+     * 申请/撤销 志愿者
+     */
+    Result packVo(String state);
+
 
 }

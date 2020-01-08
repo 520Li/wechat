@@ -1,5 +1,8 @@
 package com.lac.wechat.enums;
 
+/**
+ * 微信消息类型
+ */
 public enum MessageType {
 
     /**

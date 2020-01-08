@@ -10,7 +10,7 @@ import sun.reflect.generics.scope.Scope;
 import java.util.Date;
 
 /**
- * ClassName: Event <br/>
+ * 活动类 <br/>
  *
  * @author lac
  * @version 1.0

@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * ClassName: Article <br/>
+ * 文章类 <br/>
  *
  * @author lac
  * @version 1.0

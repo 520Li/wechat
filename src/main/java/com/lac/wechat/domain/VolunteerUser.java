@@ -1,6 +1,5 @@
 package com.lac.wechat.domain;
 
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -12,22 +11,20 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * 兑换记录类
+ * 志愿者 -- 用户 关联类
  */
-@TableName("zly_gift_log")
+@TableName("zly_volunteer_user")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GiftLog {
+public class VolunteerUser {
 
     @TableId(type = IdType.UUID)
-    private String zglId;
-    private String zglBatchId;
-    private String zglGiftId;
-    private String zglUserId;
-    private Integer zglNum;
-    private Integer zglCore;
+    private String zvuId;
+    private String volunteerId;
+    private String userId;
     private Date createTime;
     private Date updateTime;
+
 }

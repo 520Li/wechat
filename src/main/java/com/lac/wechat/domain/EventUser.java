@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
 /**
- * ClassName: EventUser <br/>
+ * 活动 -- 用户关联 类 <br/>
  *
  * @author lac
  * @version 1.0

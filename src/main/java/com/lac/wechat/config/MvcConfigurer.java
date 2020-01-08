@@ -58,7 +58,12 @@ public class MvcConfigurer implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new SessionHandlerInterceptor())
                 .addPathPatterns("/second/report.do")
-                .addPathPatterns("/second/appointment.do");
+                .addPathPatterns("/second/appointment.do")
+                .addPathPatterns("/third/appeal.do")
+                .addPathPatterns("/third/read.do")
+                .addPathPatterns("/third/home.do")
+                .addPathPatterns("/third/benefit.do")
+                .addPathPatterns("/third/volunteer.do");
 
         registry.addInterceptor(new OpenIdInterceptor())
                 .addPathPatterns("/login");

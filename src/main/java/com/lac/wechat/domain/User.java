@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * ClassName: User <br/>
+ * 公众号用户类 <br/>
  *
  * @author lac
  * @version 1.0
@@ -29,6 +29,7 @@ public class User {
     private String userPath;
     private Integer userCore;
     private Integer userSum;
+    private String userVolunteer;
 
     private Date createTime;
     private Date updateTime;

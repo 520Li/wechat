@@ -6,9 +6,8 @@ import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.lac.wechat.domain.Appeal;
 import com.lac.wechat.domain.Appoint;
 import com.lac.wechat.domain.User;
-import com.lac.wechat.service.ArticleService;
-import com.lac.wechat.service.GiftService;
-import com.lac.wechat.service.UserService;
+import com.lac.wechat.domain.Volunteer;
+import com.lac.wechat.service.*;
 import com.lac.wechat.utils.SendMessageUtil;
 import com.lac.wechat.vo.Message;
 import com.lac.wechat.vo.Result;
@@ -43,6 +42,10 @@ public class CommunityController {
     private ArticleService articleService;
     @Autowired
     private GiftService giftService;
+    @Autowired
+    private HomeService homeService;
+    @Autowired
+    private VolunteerService volunteerService;
 
 
     /**
@@ -340,6 +343,16 @@ public class CommunityController {
         return "/menu_03/home.html";
     }
 
+
+    /**
+     * 获取服务商列表
+     */
+    @PostMapping("/third/home.do")
+    @ResponseBody
+    public Result getHomeList() {
+        return new Result(true, "查询成功!", homeService.getHomeList());
+    }
+
     /**
      * 电子阅览
      */
@@ -354,6 +367,64 @@ public class CommunityController {
     @GetMapping("/third/volunteer.do")
     public String volunteer() {
         return "/menu_03/volunteer.html";
+    }
+
+    /**
+     * 志愿者招募列表
+     */
+    @PostMapping("/third/volunteer.do")
+    @ResponseBody
+    public Result voList() {
+        return new Result(true, "查询成功!", volunteerService.getVoList());
+    }
+
+    /**
+     * 志愿者申请
+     */
+    @GetMapping("/third/pact.do")
+    public String pact(HttpSession session, ModelMap map) {
+        User user = (User) session.getAttribute("login_user");
+        map.put("user", userService.getUserById(user.getUserId()));
+        return "/menu_03/volunteer_pact.html";
+    }
+
+    /**
+     * 申请/撤销 志愿者
+     *
+     * @param state
+     * @return
+     */
+    @PostMapping("/third/pact.do")
+    @ResponseBody
+    public Result packUser(String state) {
+        return userService.packVo(state);
+    }
+
+
+    /**
+     * 志愿者活动详情页
+     *
+     * @param map
+     * @return
+     */
+    @GetMapping("/third/detail.do")
+    public String detail(String voId, ModelMap map) {
+        map.put("vo", volunteerService.details(voId));
+        return "/menu_03/volunteer_detail.html";
+    }
+
+
+    /**
+     * 报名志愿者活动
+     *
+     * @param voId
+     * @return
+     */
+    @PostMapping("/third/join.do")
+    @ResponseBody
+    public Result join(String voId) {
+        volunteerService.joinVo(voId);
+        return new Result(true, "报名成功！");
     }
 
 

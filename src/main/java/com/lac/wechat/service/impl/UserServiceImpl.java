@@ -38,6 +38,8 @@ public class UserServiceImpl implements UserService {
     private EventUserMapper eventUserMapper;
     @Autowired
     private AppealMapper appealMapper;
+    @Autowired
+    private VolunteerUserMapper volunteerUserMapper;
 
     /**
      * 根据id查询用户
@@ -194,6 +196,33 @@ public class UserServiceImpl implements UserService {
         wrapper.lambda().eq(Appeal::getAppealUser, user.getUserId()).orderByDesc(Appeal::getCreateTime);
         List<Appeal> appeals = appealMapper.selectList(wrapper);
         return appeals;
+    }
+
+    /**
+     * 申请/撤销 志愿者
+     *
+     * @param state
+     */
+    @Override
+    public Result packVo(String state) {
+        String detail = "";
+        User user = (User) session.getAttribute("login_user");
+        if (state.equals("02")) {
+            detail = "撤销成功！";
+            QueryWrapper<VolunteerUser> wrapper = new QueryWrapper<>();
+            wrapper.lambda().eq(VolunteerUser::getUserId, user.getUserId());
+            List<VolunteerUser> volunteerUsers = volunteerUserMapper.selectList(wrapper);
+            if (volunteerUsers.size() > 0) {
+                return new Result(false, "你有参与的志愿者活动，无法撤销！");
+            }
+        } else {
+            detail = "申请成功！";
+        }
+        User pojo = userMapper.selectById(user.getUserId());
+        pojo.setUserVolunteer(state);
+        userMapper.updateById(pojo);
+        return new Result(true, detail);
+
     }
 
 

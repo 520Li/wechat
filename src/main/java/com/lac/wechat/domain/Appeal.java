@@ -9,6 +9,9 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * 事件举报类
+ */
 @TableName("zly_appeal")
 @Data
 public class Appeal {

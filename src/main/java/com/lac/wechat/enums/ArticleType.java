@@ -3,7 +3,7 @@ package com.lac.wechat.enums;
 import jdk.nashorn.internal.scripts.JS;
 
 /**
- * ClassName: ArticleType <br/>
+ * 文章分类 <br/>
  *
  * @author lac
  * @version 1.0

@@ -293,6 +293,8 @@ CREATE TABLE `zly_home` (
 
 /*Data for the table `zly_home` */
 
+insert  into `zly_home`(`home_id`,`home_name`,`home_local`,`home_type`,`home_tel`,`home_detail`,`home_text`,`home_path`,`home_time`,`home_state`,`home_lat`,`home_lng`,`create_time`,`update_time`) values ('1','观湖国际社区卫生服务站','观湖国际小区7号楼-1单元1层','YL','59283504','设有中医和全诊科室',NULL,'/images/1.jpg',NULL,'01',NULL,NULL,'2020-01-08 11:18:59','2020-01-08 11:19:02'),('2','脸谱港式火锅','北京市朝阳区东四环北路88号院','CY','59283501','火锅',NULL,'/images/2.jpg',NULL,'01',NULL,NULL,'2020-01-08 11:22:45','2020-01-08 11:22:47');
+
 /*Table structure for table `zly_user` */
 
 DROP TABLE IF EXISTS `zly_user`;
@@ -306,6 +308,7 @@ CREATE TABLE `zly_user` (
   `user_path` varchar(200) DEFAULT NULL COMMENT '照片路径',
   `user_sum` int(10) DEFAULT '0' COMMENT '公益总积分',
   `user_core` int(10) DEFAULT '0' COMMENT '公益当前积分',
+  `user_volunteer` varchar(10) DEFAULT '02' COMMENT '是否为志愿者   01：是   02：否',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`user_id`)
@@ -313,7 +316,47 @@ CREATE TABLE `zly_user` (
 
 /*Data for the table `zly_user` */
 
-insert  into `zly_user`(`user_id`,`user_name`,`user_type`,`user_card`,`user_iphone`,`user_path`,`user_sum`,`user_core`,`create_time`,`update_time`) values ('omRjy1OC0-3_iFigWCNsKwsxAcAg','李艾聪','1','513822199204251772','15701141304','',2000,1800,NULL,NULL);
+insert  into `zly_user`(`user_id`,`user_name`,`user_type`,`user_card`,`user_iphone`,`user_path`,`user_sum`,`user_core`,`user_volunteer`,`create_time`,`update_time`) values ('omRjy1OC0-3_iFigWCNsKwsxAcAg','李艾聪','1','513822199204251772','15701141304','/images/signup/85417ebf58bc428aa041a39459c03a81.jpg',0,0,'01',NULL,NULL);
+
+/*Table structure for table `zly_volunteer` */
+
+DROP TABLE IF EXISTS `zly_volunteer`;
+
+CREATE TABLE `zly_volunteer` (
+  `vo_id` varchar(100) NOT NULL,
+  `vo_name` varchar(100) DEFAULT NULL COMMENT '志愿者活动名字',
+  `vo_tel` varchar(100) DEFAULT NULL COMMENT '咨询电话',
+  `vo_time` varchar(100) DEFAULT NULL COMMENT '活动时间',
+  `vo_local` varchar(200) DEFAULT NULL COMMENT '活动地点',
+  `vo_state` varchar(100) DEFAULT '01' COMMENT '01：有效 02：无效',
+  `vo_duration` varchar(100) DEFAULT NULL COMMENT '持续时间',
+  `vo_path` varchar(100) DEFAULT NULL COMMENT '描述图片',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `is_join` varchar(100) DEFAULT NULL COMMENT '用户是否报名（辅助字段）',
+  PRIMARY KEY (`vo_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `zly_volunteer` */
+
+insert  into `zly_volunteer`(`vo_id`,`vo_name`,`vo_tel`,`vo_time`,`vo_local`,`vo_state`,`vo_duration`,`vo_path`,`create_time`,`update_time`,`is_join`) values ('1','观湖国际社区阳光少年志愿者招募','59283405','(工作时间周一至周五：8:30-17:00) 午休时间: 11:30-13:30','观湖国际社区居委会','01','3小时','/images/3.jpg','2020-01-08 17:32:38',NULL,NULL);
+
+/*Table structure for table `zly_volunteer_user` */
+
+DROP TABLE IF EXISTS `zly_volunteer_user`;
+
+CREATE TABLE `zly_volunteer_user` (
+  `zvu_id` varchar(100) NOT NULL COMMENT '志愿者-用户参与表',
+  `volunteer_id` varchar(100) DEFAULT NULL COMMENT '志愿者活动id',
+  `user_id` varchar(100) DEFAULT NULL COMMENT '参与用户id',
+  `create_time` datetime DEFAULT NULL COMMENT '报名时间',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`zvu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `zly_volunteer_user` */
+
+insert  into `zly_volunteer_user`(`zvu_id`,`volunteer_id`,`user_id`,`create_time`,`update_time`) values ('52dc6f82568be039bcd62b0ee6c6c4af','1','omRjy1OC0-3_iFigWCNsKwsxAcAg','2020-01-08 19:18:58',NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

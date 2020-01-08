@@ -79,7 +79,7 @@
             } else {
                 return;
             }
-            /*$.ajax({
+            $.ajax({
                 url: "/sendSms.do",
                 data: {mobile: mobile},
                 dataType: "json",
@@ -89,17 +89,17 @@
                         code = data.data;
                         setTimeout('changeCode()', 1000 * 60 * 5);
                     } else {
-                        $.toptip('服务器异常,请联系管理员', 'error');
+                        $.toptip(data.msg, 'error');
                     }
                 }
-            });*/
-            code = '666666';
+            });
+            //code = '666666';
             return false;
         }
 
         function changeMsg() {
             if (i > 0) {
-                $("#sendCode").html(i + "秒后再次发送");
+                $("#sendCode").html("重新发送("+ i +")");
                 $("#sendCode").css("color", "grey");
                 i--;
                 setTimeout('changeMsg()', 1000);

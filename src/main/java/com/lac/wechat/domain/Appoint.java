@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- * ClassName: Appoint <br/>
+ * 服务预约类 <br/>
  *
  * @author lac
  * @version 1.0

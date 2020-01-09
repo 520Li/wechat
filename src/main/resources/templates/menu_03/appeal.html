@@ -139,6 +139,10 @@
                         if (data.data.length > 0) {
 
                             $.each(data.data, function (index, obj) {
+                                var acceptor = "无";
+                                if(obj.acceptorUser){
+                                    acceptor = obj.acceptorUser;
+                                }
                                 html += "<div class=\"weui-panel__bd\">\n" +
                                     "                <div class=\"weui-media-box weui-media-box_text\">\n" +
                                     "                    <h4 class=\"weui-media-box__title\">" + obj.appealType + "</h4>\n" +
@@ -148,7 +152,7 @@
                                     "                        <li class=\"weui-media-box__info__meta weui-media-box__info__meta_extra\">" + obj.createTime + "</li>\n" +
                                     "                    </ul>\n" +
                                     "                    <ul class=\"weui-media-box__info\">\n" +
-                                    "                         <li class=\"weui-media-box__info__meta\">受理人:" + obj.acceptorUser + "</li>\n" +
+                                    "                         <li class=\"weui-media-box__info__meta\">受理人:" + acceptor + "</li>\n" +
                                     "                        <li class=\"weui-media-box__info__meta weui-media-box__info__meta_extra\"  onclick=\"display('" + obj.appealId + "')\">查看受理情况</li>\n" +
                                     "                    </ul>\n" +
                                     "                </div>\n" +

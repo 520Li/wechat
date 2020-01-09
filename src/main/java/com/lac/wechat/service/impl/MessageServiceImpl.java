@@ -62,7 +62,7 @@ public class MessageServiceImpl implements MessageService {
             } else if (message.getEvent().equals("CLICK")) {
                 content = "<Content><![CDATA[用户点击了菜单: " + message.getEventKey() + "]]></Content>";
             } else if (message.getEvent().equals("VIEW")) {
-                content = "<Content><![CDATA[用户点击了跳转视图:" + message.getEventKey() + "]]></Content>";
+                //content = "<Content><![CDATA[用户点击了跳转视图:" + message.getEventKey() + "]]></Content>";
             }
         } else {
             msgType = "text";

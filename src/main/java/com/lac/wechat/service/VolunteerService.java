@@ -1,6 +1,7 @@
 package com.lac.wechat.service;
 
 import com.lac.wechat.domain.Volunteer;
+import com.lac.wechat.vo.Result;
 
 import java.util.List;
 
@@ -23,5 +24,5 @@ public interface VolunteerService {
      * 参加活动报名
      * @param voId
      */
-    void joinVo(String voId);
+    Result joinVo(String voId);
 }

@@ -226,7 +226,7 @@ public class CommunityController {
      * @param arId
      * @return
      */
-    @GetMapping("/first/article.do")
+    @GetMapping("/first/detail.do")
     public String articleDetail(String arId, ModelMap map) {
         map.put("article", articleService.getById(arId));
         return "/menu_01/article.html";
@@ -437,8 +437,7 @@ public class CommunityController {
     @PostMapping("/third/join.do")
     @ResponseBody
     public Result join(String voId) {
-        volunteerService.joinVo(voId);
-        return new Result(true, "报名成功！");
+        return volunteerService.joinVo(voId);
     }
 
 
